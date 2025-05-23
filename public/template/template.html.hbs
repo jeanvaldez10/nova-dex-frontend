@@ -1,0 +1,270 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Template</title>
+    <link rel="stylesheet" href="/template/style.css" />
+    <link rel="stylesheet" href="/template/assets/fonts/font.css" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"
+  ></script>
+  </head>
+  <body>
+    <div class="body">
+      <img
+        id="bg"
+        src={{pnlBg}}
+        class="background-image"
+        alt="background-image"
+      />
+      <main class="pnl-main font-outfit">
+        <div class="main-container">
+          <section class="main-section section-left">
+            <div id="percentage-container" class="{{percentageClass}}">
+              <img
+                id="icon"
+                src={{gainLossIcon}}
+                {{! src="/template/assets/icon-profit.svg" }}
+                alt="profit icon"
+                class="profit-icon"
+              />
+              <span id="percentage24h" class="{{percentageTextClass}}">
+                {{percentage24h}}
+              </span>
+            </div>
+            <div class="token-info">
+              <div class="{{imageBg}}">
+                <img
+                  id="gradient"
+                  src="/template/assets/bg-overlay-logo.svg"
+                  alt="gradient logo"
+                  class={{gradientLogo}}
+                />
+                <img src={{image}} alt="token image" class="token-image" />
+              </div>
+              <span class="token-name">{{symbol}}</span>
+            </div>
+            <div id="newHolding" class="daily-profit">
+              {{#if showUSD}}
+                {{profitD}}
+              {{else}}
+                <div style="display: flex;">
+                  {{profit}}
+                  <img
+                    src="/template/assets/sol-white.svg"
+                    alt="sol icon"
+                    style="width: 30px; height:auto; margin-left:10px; margin-top: 10px"
+                    {{!-- class="summary-icon" --}}
+                  />
+                </div>
+              {{/if}}
+            </div>
+          </section>
+          <section class="main-section section-right">
+            <div class="section-right-header">
+              <div style="color:#9191A4">{{leftHeader}}</div>
+              <div>{{rightHeader}}</div>
+            </div>
+            <div class="right-content">
+              <ul>
+                <li class="right-list">
+                  <div class="summary-item summary-bought">
+                    <img
+                      src="/template/assets/icon-bought.svg"
+                      alt="bought icon"
+                      class="summary-icon"
+                    />
+                    <span> Bought </span>
+                  </div>
+                  <div id="investedValue">
+                    {{#if showUSD}}
+                      {{investedD}}
+                    {{else}}
+                      {{invested}}
+                    {{/if}}
+                  </div>
+                </li>
+                <li class="right-list">
+                  <div class="summary-item summary-holding">
+                    <img
+                      src="/template/assets/icon-holding.svg"
+                      alt="holding icon"
+                      class="summary-icon"
+                    />
+                    <span> Holding </span>
+                  </div>
+                  <div id="holdingValue">
+                    {{#if showUSD}}
+                      {{holdingD}}
+                    {{else}}
+                      {{holding}}
+                    {{/if}}
+                  </div>
+                </li>
+                <li class="right-list">
+                  <div class="summary-item summary-sold">
+                    <img
+                      src="/template/assets/icon-sold.svg"
+                      alt="sold icon"
+                      class="summary-icon"
+                    />
+                    <span> Sold </span>
+                  </div>
+                  <div id="soldValue">
+                    {{#if showUSD}}
+                      {{soldD}}
+                    {{else}}
+                      {{sold}}
+                    {{/if}}
+                  </div>
+                </li>
+              </ul>
+              <div class="total-profit-container">
+                <div id="summary-total" class="{{summaryTotalClass}}">
+                  <img
+                    src="/template/assets/dots.svg"
+                    alt="dots"
+                    class="bg-dots"
+                  />
+                  <div class="total-profit-text">
+                    <div id="profitD">{{profitD}} {{profitOrLoss}}</div>
+                    <div id="profit">{{profitSol}}</div>
+                  </div>
+                </div>
+                <img
+                  id="gradient"
+                  src={{gainLossGradient}}
+                  alt="gradient profit"
+                  class="gradient-profit"
+                />
+                <img
+                  src="/template/assets/loss-grad.svg"
+                  alt="gradient loss"
+                  class={{lossGradOverlayClass}}
+                  />
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <footer class={{footerHeaderClass}}>
+        {{!-- <section class="referral-container">
+          <span class="referral-text">Referral Code :</span>
+          <span id="referral-code" class="referral-code">
+            {{referralCode}}</span>
+          <img
+            src="/template/assets/icon-sparkle.svg"
+            alt="sparkle icon"
+            class="sparkle-icon"
+          />
+        </section> --}}
+
+        <section class="nova-socmed">
+          <div>The All in One Trading Platform</div>
+          <div class="nova-socmed-content">
+            <p class="nova-socmed-item">
+              <img
+                src="/template/assets/icon-x.svg"
+                alt="X icon"
+                class="socmed-icon"
+                style="margin-top: 2px;"
+              />
+              <span>@tradeonnova</span>
+            </p>
+            <div class="separator" style="margin-top: 2px;"></div>
+            <p class="nova-socmed-item">
+              <img
+                src="/template/assets/icon-web.svg"
+                alt="Web icon"
+                class="socmed-icon"
+                style="margin-top: 2px;"
+              />
+              <span> nova.trade </span>
+            </p>
+          </div>
+        </section>
+      </footer>
+    </div>
+
+  </body>
+  <!-- <script>
+    function updateContainerStyle(bgNumber) { const container1 =
+    document.getElementById("container1"); const specialBgs = [1, 4, 5, 6]; //
+    Remove existing dots if any const existingDots =
+    container1.querySelectorAll(".corner-dot"); existingDots.forEach((dot) =>
+    dot.remove()); if (specialBgs.includes(bgNumber)) { // Add the classes
+    container1.classList.add( "bg-[#0C0012]/50", "rounded-[71.33px]",
+    "backdrop-blur-[30px]", "border-t-2", "border-[#E4ADFF]", "after:absolute",
+    "after:top-0", "after:left-0", "after:w-full", "after:h-[10rem]",
+    "after:z-[-1]", "after:bg-[#E4ADFF]/[4%]", "after:blur-xl",
+    "overflow-hidden" ); // Add the corner dots const dotPositions = [ { left:
+    0, top: 0 }, { left: 0, bottom: 0 }, { right: 0, top: 0 }, { right: 0,
+    bottom: 0 }, ]; dotPositions.forEach((pos) => { const dot =
+    document.createElement("div"); dot.className = "corner-dot absolute size-2
+    z-[1] rounded-full m-16 bg-white"; Object.entries(pos).forEach(([key,
+    value]) => { dot.style[key] = value === 0 ? "0" : "auto"; });
+    container1.appendChild(dot); }); } else { container1.classList.remove(
+    "bg-[#0C0012]/50", "rounded-[71.33px]", "backdrop-blur-[30px]",
+    "border-t-2", "border-[#E4ADFF]", "after:absolute", "after:top-0",
+    "after:left-0", "after:w-full", "after:h-[10rem]", "after:z-[-1]",
+    "after:bg-[#E4ADFF]/[4%]", "after:blur-xl", "overflow-hidden" ); } }
+    function randomizeBackground() { const bgCount = 8; // Number of background
+    images available const randomNum = Math.floor(Math.random() * bgCount) + 1;
+    const bgElement = document.getElementById("bg"); bgElement.src =
+    `/assets/BG${randomNum}.png`; updateContainerStyle(randomNum); }
+    function adjustPercentageSize() { const percentageElement =
+    document.getElementById("percentage"); const percentageContentElement =
+    document.getElementById("percentage-content"); const textLength =
+    percentageElement.innerText.length; let fontSize = 240; // default font size
+    let lineHeight = 300; // default line height if (textLength > 14) { fontSize
+    = 150; } else if (textLength > 10) { fontSize = 180; } else if (textLength >
+    7) { fontSize = 200; } percentageContentElement.style.fontSize =
+    `${fontSize}px`; percentageContentElement.style.lineHeight =
+    `${lineHeight}px`; } function adjustInvestedSize() { const investedElement =
+    document.getElementById("invested"); const investedContentElement =
+    document.getElementById("invested-content"); const textLength =
+    investedElement.innerText.length; let scale = 1; // default scale if
+    (textLength > 14) { scale = 0.7; } else if (textLength > 10) { scale = 0.85;
+    } investedContentElement.style.transform = `scale(${scale})`; } function
+    adjustCurrProfSize() { const profitElement =
+    document.getElementById("profit"); const profitContentElement =
+    document.getElementById("profit-content"); const textLength =
+    profitElement.innerText.length; let scale = 1; // default scale if
+    (textLength > 14) { scale = 0.7; } else if (textLength > 10) { scale = 0.85;
+    } profitContentElement.style.transform = `scale(${scale})`; } function
+    adjustTokenNameSize() { const tokenNameElement =
+    document.getElementById("token-name"); const textLength =
+    tokenNameElement.innerText.length; let fontSize = 176.89; // default font
+    size lineHeight = 260; tokenNameElement.style.fontSize = `${fontSize}px`;
+    tokenNameElement.style.lineHeight = `${lineHeight}px`; } function
+    generateQRCode(url) { QRCode.toDataURL(url, { width: 192, height: 192 },
+    function (err, url) { if (err) console.warn(err);
+    document.getElementById("qr").src = url; }); } function displayParams() {
+    const urlParams = new URLSearchParams(window.location.search); let
+    percentage = urlParams.get("percentage"); let percentageD =
+    urlParams.get("percentageD"); let invested = urlParams.getAll("invested");
+    let investedD = urlParams.get("investedD"); let investedDBlur =
+    urlParams.get("investedD-blur"); let cp = urlParams.get("cp"); let cpD =
+    urlParams.get("cpD"); let ref = urlParams.get("ref"); let tn =
+    urlParams.get("tn"); let qr = urlParams.get("qr"); if (tn && tn.length > 0)
+    { document.getElementById("token-name").innerText = `${tn}`; } if
+    (percentage && percentage.length > 0) { if (!percentage.includes("-")) {
+    percentage = `+${percentage}`; } percentage = `${percentage}%`;
+    document.getElementById("percentage").innerText = `${percentage}`; } if
+    (percentageD && percentageD.length > 0) {
+    document.getElementById("percentageD").innerText = `$${percentageD}`; } if
+    (invested && invested.length > 0)
+    document.getElementById("invested").innerText = `${invested}`; if (investedD
+    && investedD.length > 0) { document.getElementById("investedD").innerText =
+    `$${investedD}`; } if (cp && cp.length > 0)
+    document.getElementById("profit").innerText = `${cp}`; if (cpD && cpD.length
+    > 0) { document.getElementById("profitD").innerText = `$${cpD}`; } if (ref
+    && ref.length > 0) document.getElementById("referal-text").innerText =
+    `${ref}`;
+    document.getElementById("percentage").classList.add("GradientProfit"); if
+    (qr && qr.length > 0) { generateQRCode(qr); } } window.onload = function ()
+    { randomizeBackground(); displayParams(); adjustPercentageSize();
+    adjustInvestedSize(); adjustCurrProfSize(); adjustTokenNameSize(); };
+  </script> -->
+</html>
