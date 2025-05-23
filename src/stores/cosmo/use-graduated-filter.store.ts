@@ -1,0 +1,483 @@
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
+
+export type GraduatedFilterState = {
+  isLoadingFilterFetch: boolean;
+  setIsLoadingFilterFetch: (newState: boolean) => void;
+  filters: {
+    preview: {
+      checkBoxes: {
+        raydium: boolean;
+        pumpfun: boolean;
+        boop: boolean;
+        dynamic_bonding_curve: boolean;
+        meteora_dlmm: boolean;
+        meteora_dyn: boolean;
+        moonshot: boolean;
+        pumpswap: boolean;
+        launchlab: boolean;
+        showHide: boolean;
+      };
+      showKeywords: string;
+      doNotShowKeywords: string;
+      byHoldersCount: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byDevHoldingPercentage: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byDevMigrated: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      bySnipers: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byInsiderHoldingPercentage: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byBotHolders: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byAge: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byCurrentLiquidity: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byVolume: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byMarketCap: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byTXNS: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byBuys: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      bySells: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+    };
+    genuine: {
+      checkBoxes: {
+        raydium: boolean;
+        pumpfun: boolean;
+        boop: boolean;
+        dynamic_bonding_curve: boolean;
+        meteora_dlmm: boolean;
+        meteora_dyn: boolean;
+        moonshot: boolean;
+        pumpswap: boolean;
+        launchlab: boolean;
+        showHide: boolean;
+      };
+      showKeywords: string;
+      doNotShowKeywords: string;
+      byHoldersCount: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byDevHoldingPercentage: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byDevMigrated: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      bySnipers: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byInsiderHoldingPercentage: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byBotHolders: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byAge: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byCurrentLiquidity: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byVolume: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byMarketCap: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byTXNS: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      byBuys: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+      bySells: {
+        min: number | undefined;
+        max: number | undefined;
+      };
+    };
+  };
+  setPreviewSearch: (value: string) => void;
+  graduatedFiltersCount: number;
+  toggleGraduatedFilter: (
+    filterKey: keyof GraduatedFilterState["filters"]["preview"]["checkBoxes"],
+    filterType: keyof GraduatedFilterState["filters"],
+  ) => void;
+  setShowKeywords: (
+    value: string,
+    filterType: keyof GraduatedFilterState["filters"],
+  ) => void;
+  setDoNotShowKeywords: (
+    value: string,
+    filterType: keyof GraduatedFilterState["filters"],
+  ) => void;
+  setRangeFilter: (
+    filterKey: keyof Omit<
+      GraduatedFilterState["filters"]["preview"],
+      "checkBoxes" | "showKeywords" | "doNotShowKeywords"
+    >,
+    value: number | undefined,
+    rangeType: "min" | "max",
+    filterType: keyof GraduatedFilterState["filters"],
+  ) => void;
+  resetGraduatedFilters: (
+    filterType: keyof GraduatedFilterState["filters"],
+  ) => void;
+  applyGraduatedFilters: () => void;
+  updateGraduatedFiltersCount: () => void;
+};
+
+export const useGraduatedFilterStore = create<GraduatedFilterState>()(
+  persist(
+    (set) => ({
+      isLoadingFilterFetch: false,
+      setIsLoadingFilterFetch: (newState) =>
+        set(() => ({
+          isLoadingFilterFetch: newState,
+        })),
+      filters: {
+        preview: {
+          checkBoxes: {
+            raydium: true,
+            pumpfun: true,
+            boop: true,
+            dynamic_bonding_curve: true,
+            meteora_dlmm: true,
+            meteora_dyn: true,
+            moonshot: true,
+            pumpswap: true,
+            launchlab: true,
+            showHide: false,
+          },
+          showKeywords: "",
+          doNotShowKeywords: "",
+          byHoldersCount: {
+            min: undefined,
+            max: undefined,
+          },
+          byDevHoldingPercentage: {
+            min: undefined,
+            max: undefined,
+          },
+          byDevMigrated: {
+            min: undefined,
+            max: undefined,
+          },
+          bySnipers: {
+            min: undefined,
+            max: undefined,
+          },
+          byInsiderHoldingPercentage: {
+            min: undefined,
+            max: undefined,
+          },
+          byBotHolders: {
+            min: undefined,
+            max: undefined,
+          },
+          byAge: {
+            min: undefined,
+            max: undefined,
+          },
+          byCurrentLiquidity: {
+            min: undefined,
+            max: undefined,
+          },
+          byVolume: {
+            min: undefined,
+            max: undefined,
+          },
+          byMarketCap: {
+            min: undefined,
+            max: undefined,
+          },
+          byTXNS: {
+            min: undefined,
+            max: undefined,
+          },
+          byBuys: {
+            min: undefined,
+            max: undefined,
+          },
+          bySells: {
+            min: undefined,
+            max: undefined,
+          },
+        },
+        genuine: {
+          checkBoxes: {
+            raydium: true,
+            pumpfun: true,
+            boop: true,
+            dynamic_bonding_curve: true,
+            meteora_dlmm: true,
+            meteora_dyn: true,
+            moonshot: true,
+            pumpswap: true,
+            launchlab: true,
+            showHide: false,
+          },
+          showKeywords: "",
+          doNotShowKeywords: "",
+          byHoldersCount: {
+            min: undefined,
+            max: undefined,
+          },
+          byDevHoldingPercentage: {
+            min: undefined,
+            max: undefined,
+          },
+          byDevMigrated: {
+            min: undefined,
+            max: undefined,
+          },
+          bySnipers: {
+            min: undefined,
+            max: undefined,
+          },
+          byInsiderHoldingPercentage: {
+            min: undefined,
+            max: undefined,
+          },
+          byBotHolders: {
+            min: undefined,
+            max: undefined,
+          },
+          byAge: {
+            min: undefined,
+            max: undefined,
+          },
+          byCurrentLiquidity: {
+            min: undefined,
+            max: undefined,
+          },
+          byVolume: {
+            min: undefined,
+            max: undefined,
+          },
+          byMarketCap: {
+            min: undefined,
+            max: undefined,
+          },
+          byTXNS: {
+            min: undefined,
+            max: undefined,
+          },
+          byBuys: {
+            min: undefined,
+            max: undefined,
+          },
+          bySells: {
+            min: undefined,
+            max: undefined,
+          },
+        },
+      },
+      graduatedFiltersCount: 0,
+      toggleGraduatedFilter: (filterKey, filterType) =>
+        set((state) => ({
+          filters: {
+            ...state.filters,
+            [filterType]: {
+              ...state.filters[filterType],
+              checkBoxes: {
+                ...state.filters[filterType].checkBoxes,
+                [filterKey]: !state.filters[filterType].checkBoxes[filterKey],
+              },
+            },
+          },
+        })),
+      setShowKeywords: (value, filterType) =>
+        set((state) => ({
+          filters: {
+            ...state.filters,
+            [filterType]: {
+              ...state.filters[filterType],
+              showKeywords: value,
+            },
+          },
+        })),
+      setDoNotShowKeywords: (value, filterType) =>
+        set((state) => ({
+          filters: {
+            ...state.filters,
+            [filterType]: {
+              ...state.filters[filterType],
+              doNotShowKeywords: value,
+            },
+          },
+        })),
+      setRangeFilter: (filterKey, value, rangeType, filterType) =>
+        set((state) => ({
+          filters: {
+            ...state.filters,
+            [filterType]: {
+              ...state.filters[filterType],
+              [filterKey]: {
+                ...state.filters[filterType][filterKey],
+                [rangeType]: value,
+              },
+            },
+          },
+        })),
+      resetGraduatedFilters: (filterType) => {
+        set((state) => ({
+          isLoadingFilterFetch: true,
+          filters: {
+            ...state.filters,
+            [filterType]: {
+              checkBoxes: {
+                raydium: true,
+                pumpfun: true,
+                boop: true,
+                dynamic_bonding_curve: true,
+                meteora_dlmm: true,
+                meteora_dyn: true,
+                moonshot: true,
+                pumpswap: true,
+                launchlab: true,
+                showHide: false,
+              },
+              showKeywords: "",
+              doNotShowKeywords: "",
+              byHoldersCount: {
+                min: undefined,
+                max: undefined,
+              },
+              byDevHoldingPercentage: {
+                min: undefined,
+                max: undefined,
+              },
+              byDevMigrated: {
+                min: undefined,
+                max: undefined,
+              },
+              bySnipers: {
+                min: undefined,
+                max: undefined,
+              },
+              byInsiderHoldingPercentage: {
+                min: undefined,
+                max: undefined,
+              },
+              byBotHolders: {
+                min: undefined,
+                max: undefined,
+              },
+              byAge: {
+                min: undefined,
+                max: undefined,
+              },
+              byCurrentLiquidity: {
+                min: undefined,
+                max: undefined,
+              },
+              byVolume: {
+                min: undefined,
+                max: undefined,
+              },
+              byMarketCap: {
+                min: undefined,
+                max: undefined,
+              },
+              byTXNS: {
+                min: undefined,
+                max: undefined,
+              },
+              byBuys: {
+                min: undefined,
+                max: undefined,
+              },
+              bySells: {
+                min: undefined,
+                max: undefined,
+              },
+            },
+          },
+          // Update the filter count to trigger a refetch
+          graduatedFiltersCount:
+            state.graduatedFiltersCount < 10
+              ? state.graduatedFiltersCount + 1
+              : 0,
+        }));
+      },
+      setPreviewSearch: (v) =>
+        set((state) => ({
+          filters: {
+            ...state.filters,
+            preview: {
+              ...state.filters.preview,
+              showKeywords: v,
+            },
+          },
+        })),
+      applyGraduatedFilters: () => {
+        // console.log("Graduated Filters applied!");
+
+        set((state) => ({
+          filters: {
+            ...state.filters,
+            genuine: { ...state.filters.preview },
+          },
+        }));
+      },
+      updateGraduatedFiltersCount: () => {
+        set((state) => ({
+          graduatedFiltersCount:
+            state.graduatedFiltersCount < 10
+              ? state.graduatedFiltersCount + 1
+              : 0,
+        }));
+      },
+    }),
+    {
+      name: "graduated-filter",
+      storage: createJSONStorage(() => localStorage),
+    },
+  ),
+);
