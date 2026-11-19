@@ -33,7 +33,47 @@ Authenticated routes live under `src/app/(main)`. Middleware (`src/middleware.ts
 | `/verify-2fa` | Two-factor authentication |
 | `/login` | Phantom (and Telegram) sign-in |
 
-The header also links Cosmo, Trending, Wallet Tracker, Twitter Monitor, Holdings, and Points. A footer dock opens sniper, wallet tracker, Twitter monitor, alerts, and PnL tracker panels.
+The header links Cosmo, Trending, Wallet Tracker, Twitter Monitor, Holdings, and Points. Settings and the wallet manager are opened from the account menu, not the main nav.
+
+These routes exist but are not product pages: `/token-client/[mint]` and `/prefetch/[mint]` are alternate token loads, and `/sentry-example-page` plus `/api/sentry-example-api` are Sentry samples.
+
+## What the UI actually does
+
+**Cosmo.** Three live columns: newly created, about to graduate, and graduated. Users can hide tokens, blacklist developers, change the card layout, and set a quick-buy amount. First-time users (`_is_new_user`) get an onboarding modal.
+
+**Trending.** Time windows (`1m`, `5m`, `30m`, `1h`) plus DEX and extra filters, persisted in cookies.
+
+**Token page.** TradingView chart, buy and sell, instant trade, and tables for trades, holders, top traders, developer tokens, and the user’s position. It also shows similar tokens, token security data, and a shareable PnL card (several visual themes).
+
+**Wallets** (`/wallets`). Generate, import, rename, select, archive, unarchive, delete, reveal the key, withdraw, and read balances. Deposit and distribute flows live in the wallet modals.
+
+**Wallet tracker.** Follow wallets, import a list, and watch their trades. The same panel can sit in the footer or as a popup.
+
+**Twitter monitor.** Search and follow accounts, with a dedicated WebSocket. A Twitter sniper can be configured from that panel.
+
+**Sniper.** Footer panel for new-pair tasks and migration tasks (create, edit, delete). Task updates also arrive on the `sniper` socket channel.
+
+**Holdings, points, referral.** Holdings lists tokens bought by the selected wallet. Points is its own page. Referral shows history, lets the user change their code, and claim rewards.
+
+**Alerts and PnL.** Footer alerts, plus a PnL tracker that can render a card and capture it as an image.
+
+**Global chrome.** Search (mint or token), a clipboard watcher for Solana addresses (`QuickClipboard`), an announcement bar, a holdings marquee, and a region switcher (US / EU / Asia) in the footer. External links point at `https://docs.tradeonnova.io/` and `https://x.com/TradeOnNova`.
+
+**Settings that are live.** Quick buy, quick sell, buy sniper, and sell sniper presets (up to five each), plus Cosmo and token-page customization (button, font, color, avatar, socials, token-info density). Copy trade, limit orders, and the settings-page 2FA entry are implemented under `src/components/customs/setting` and `src/apis/rest` but commented out of `SettingsMenu`. `/verify-2fa` still loads the 2FA screen.
+
+**Login.** Phantom signs a server nonce (`generateNonce` → `authenticate`). The flow can also take an access code and a Telegram payload (`?d=` on `/login`, decoded by `decodeTelegramData`). Mobile Phantom uses the helpers in `src/utils/phantom-wallet`. The session cookie is `_nova_session`.
+
+## Live channels
+
+`AllWSProvider` opens three sockets.
+
+| Socket | URL | Channels it handles |
+| --- | --- | --- |
+| Main (`allws`) | Region WebSocket | `walletBalances`, `sniper`, `footer`, `alerts`, `solanaPrice`, `holdings` |
+| Notifications | Same host | Tracker and transaction notifications |
+| Twitter monitor | `NEXT_PUBLIC_WS_TWITTER_MONITOR_URL` | Twitter monitor messages; authenticates with `_twitter_api_key` |
+
+SOL price is also written to `localStorage` as `current_solana_price`. Parse failures are reported to Sentry.
 
 ## How the app is wired
 
@@ -43,7 +83,7 @@ The header also links Cosmo, Trending, Wallet Tracker, Twitter Monitor, Holdings
 
 **Realtime.** `AllWSProvider` (`src/providers/AllWSProvider.tsx`) wraps the main layout and opens sockets for the main feed (SOL price, holdings, alerts, and related channels), notification/tracker events, and the Twitter monitor. Messages land in Zustand stores that the pages read.
 
-**Token page.** `src/app/(main)/token/[mint-address]` renders the chart (`TVChartContainer`) and trade tables. Candle and trade history come from the REST chart endpoints; live updates come from the sockets above.
+**Token page.** `src/app/(main)/token/[mint-address]` renders the chart (`TVChartContainer`) and the tables above. Candle and trade history come from the REST chart endpoints; live updates come from the sockets above.
 
 **State.** Feature stores sit under `src/stores` (token, holdings, footer, settings, wallets). Shared UI primitives are in `src/components/ui`. Product UI is in `src/components/customs`. REST clients are in `src/apis/rest`.
 
